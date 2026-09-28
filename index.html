@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      try {
+        const t = localStorage.getItem("tervia-theme");
+        if (t === "light") document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+    <title>Tervia: SSH, RDP, SFTP and port forwarding in one window</title>
+    <meta
+      name="description"
+      content="A desktop client for remote machines. SSH, RDP, SFTP and port forwarding for your saved hosts, in one window, with a shared vault and encrypted sync. Rust and Tauri, no Electron, no telemetry. macOS, Linux and Windows."
+    />
+    <link rel="icon" href="assets/logo.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="assets/icon.png" />
+    <link rel="preload" href="assets/fonts/recursive-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="styles.css" />
+    <meta property="og:title" content="Tervia" />
+    <meta property="og:description" content="SSH, RDP, SFTP and port forwarding for your saved machines, in one window." />
+    <meta property="og:image" content="https://tervia.rendy.dev/assets/icon.png" />
+    <meta property="og:url" content="https://tervia.rendy.dev/" />
+    <meta name="twitter:card" content="summary" />
+    <script src="main.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="top wrap">
+      <a class="brand" href="/">
+        <img src="assets/logo.svg" width="28" height="28" alt="" />
+        Tervia
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="#hosts">Features</a>
+        <a href="#download">Download</a>
+        <a href="https://github.com/rendyuwu/tervia">GitHub</a>
+        <button type="button" class="theme-toggle" aria-pressed="true" title="Dark theme" data-theme-toggle hidden>
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2" />
+            <path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor" />
+          </svg>
+          <span class="sr">Dark theme</span>
+        </button>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero wrap" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <h1 id="hero-title">The machines you log into, in one window.</h1>
+          <p class="hero-lead">
+            SSH, RDP, SFTP and port forwarding in one desktop app, with a shared vault and encrypted sync between
+            your computers. A Rust backend and one webview, not Electron. No account, no telemetry.
+          </p>
+          <div class="cta">
+            <a class="btn" href="https://github.com/rendyuwu/tervia/releases/latest" data-primary>Download</a>
+            <a class="cta-alt" href="#download">All platforms</a>
+          </div>
+          <p class="cta-file" data-primary-file>Free and open source, Apache-2.0.</p>
+        </div>
+
+        <svg class="tree" viewBox="0 0 104 90" role="img" aria-labelledby="tree-title">
+          <title id="tree-title">
+            A host list: group acme holds prod (db-01 over SSH, win-build over RDP, both via bastion) and bastion;
+            group homelab holds pve-01 with a local forward on port 8006, and nas.
+          </title>
+          <defs>
+            <linearGradient id="tree-ink" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="60" y2="90">
+              <stop offset="0" stop-color="#139491" />
+              <stop offset="1" stop-color="#3a3fa6" />
+            </linearGradient>
+          </defs>
+          <g class="lines">
+            <path class="ln" style="--d: 0s; --t: 0.35s" pathLength="1" d="M1.9 5H14.1" />
+            <path class="ln" style="--d: 0.3s; --t: 0.9s" pathLength="1" d="M8 8.1V62.2A2.8 2.8 0 0 0 10.8 65H14.5" />
+            <path class="ln" style="--d: 0.35s; --t: 0.3s" pathLength="1" d="M8 12.2A2.8 2.8 0 0 0 10.8 15H14.5" />
+            <path class="ln" style="--d: 0.55s; --t: 0.7s" pathLength="1" d="M18 18.6V52.2A2.8 2.8 0 0 0 20.8 55H24.5" />
+            <path class="ln" style="--d: 0.6s; --t: 0.3s" pathLength="1" d="M18 22.2A2.8 2.8 0 0 0 20.8 25H24.5" />
+            <path class="ln" style="--d: 0.8s; --t: 0.45s" pathLength="1" d="M28 28.6V42.2A2.8 2.8 0 0 0 30.8 45H34.5" />
+            <path class="ln" style="--d: 0.85s; --t: 0.3s" pathLength="1" d="M28 32.2A2.8 2.8 0 0 0 30.8 35H34.5" />
+            <path class="ln" style="--d: 1.2s; --t: 0.45s" pathLength="1" d="M18 68.6V82.2A2.8 2.8 0 0 0 20.8 85H24.5" />
+            <path class="ln" style="--d: 1.25s; --t: 0.3s" pathLength="1" d="M18 72.2A2.8 2.8 0 0 0 20.8 75H24.5" />
+          </g>
+          <g class="labels" aria-hidden="true">
+            <text class="lb root" style="--d: 0.2s" x="17" y="5" dy="0.35em">Hosts</text>
+            <text class="lb" style="--d: 0.6s" x="17" y="15" dy="0.35em">acme</text>
+            <text class="lb" style="--d: 0.85s" x="27" y="25" dy="0.35em">prod</text>
+            <text class="lb" style="--d: 1.1s" x="37" y="35" dy="0.35em">db-01</text>
+            <text class="lb meta" style="--d: 1.2s" x="66" y="35" dy="0.35em"><tspan class="ssh">ssh</tspan> via bastion</text>
+            <text class="lb" style="--d: 1.2s" x="37" y="45" dy="0.35em">win-build</text>
+            <text class="lb meta" style="--d: 1.3s" x="66" y="45" dy="0.35em"><tspan class="rdp">rdp</tspan> via bastion</text>
+            <text class="lb" style="--d: 1.2s" x="27" y="55" dy="0.35em">bastion</text>
+            <text class="lb meta" style="--d: 1.3s" x="66" y="55" dy="0.35em"><tspan class="ssh">ssh</tspan> jump host</text>
+            <text class="lb" style="--d: 1.15s" x="17" y="65" dy="0.35em">homelab</text>
+            <text class="lb" style="--d: 1.5s" x="27" y="75" dy="0.35em">pve-01</text>
+            <text class="lb meta" style="--d: 1.6s" x="66" y="75" dy="0.35em"><tspan class="ssh">ssh</tspan> -L 8006</text>
+            <text class="lb" style="--d: 1.65s" x="27" y="85" dy="0.35em">nas</text>
+            <text class="lb meta" style="--d: 1.75s" x="66" y="85" dy="0.35em"><tspan class="ssh">ssh</tspan> ssh-agent</text>
+          </g>
+        </svg>
+      </section>
+
+      <figure class="shot shot-main wrap">
+        <a class="zoom" href="assets/shots/main.webp">
+          <span class="sr">Enlarge screenshot: </span><img
+          src="assets/shots/main.webp"
+          width="1920"
+          height="1151"
+          alt="Tervia's main window: an SSH terminal, the local and remote file trees on the left, and live host CPU, RAM, network and ping in the status bar."
+        />
+        </a>
+      </figure>
+
+      <div class="branches wrap">
+        <section class="branch" id="hosts" aria-labelledby="hosts-h">
+          <h2 id="hosts-h">Hosts</h2>
+          <div class="branch-body">
+            <div class="copy">
+              <p class="claim">Every SSH and RDP host in one list, in groups you nest yourself.</p>
+              <ul class="facts">
+                <li>Tags, an icon and a colour per host. Search by name, see when you last connected.</li>
+                <li>Import from <code>~/.ssh/config</code> and PuTTY <code>.reg</code> exports.</li>
+                <li>
+                  Connect from the Hosts page, the quick connect box in the header, or <code>#</code> in the Command
+                  Palette.
+                </li>
+              </ul>
+            </div>
+            <figure class="shot">
+              <a class="zoom" href="assets/shots/hosts.webp">
+                <span class="sr">Enlarge screenshot: </span><img
+                src="assets/shots/hosts.webp"
+                width="1920"
+                height="1152"
+                loading="lazy"
+                alt="The Hosts page: SSH and RDP hosts as cards in Linux and Windows groups, with their address, last connection and protocol filters."
+              />
+              </a>
+            </figure>
+          </div>
+        </section>
+
+        <section class="branch" id="vault" aria-labelledby="vault-h">
+          <h2 id="vault-h">Vault</h2>
+          <div class="branch-body">
+            <div class="copy">
+              <p class="claim">Identities and keys stored once, shared by every host that logs in with them.</p>
+              <ul class="facts">
+                <li>
+                  An identity is a username plus a password, a key or ssh-agent. One identity can use its key over SSH
+                  and its password over RDP.
+                </li>
+                <li>
+                  Plain private keys, OpenSSH certificates, or hardware keys through ssh-agent. Generate Ed25519, ECDSA
+                  P-256 or RSA-4096, or import OpenSSH, PKCS#1, PKCS#8 and PuTTY <code>.ppk</code> keys.
+                </li>
+                <li>
+                  Check a key to see its type and SHA-256 fingerprint, and copy its public key for
+                  <code>authorized_keys</code>.
+                </li>
+                <li>Give a group a default identity and new hosts in it start with it.</li>
+                <li>
+                  Secrets live in the macOS Keychain, a DPAPI-encrypted file on Windows, or a plaintext file with mode
+                  <code>0600</code> on Linux.
+                </li>
+              </ul>
+            </div>
+            <figure class="diagram">
+              <svg viewBox="0 0 130 58" role="img" aria-labelledby="vault-title">
+                <title id="vault-title">
+                  One identity, deploy, used by three hosts: db-01 and bastion log in with its key over SSH, win-build
+                  with its password over RDP.
+                </title>
+                <path class="bus" d="M24 29H62" />
+                <g class="strands">
+                  <path d="M60 29H66A4 4 0 0 0 70 25V14A4 4 0 0 1 74 10H88" />
+                  <path d="M60 29H88" />
+                  <path d="M60 29H66A4 4 0 0 1 70 33V44A4 4 0 0 0 74 48H88" />
+                </g>
+                <g class="mux-labels" aria-hidden="true">
+                  <text class="host" x="20" y="29" dy="0.35em" text-anchor="end">deploy</text>
+                  <text class="caption" x="43" y="21" text-anchor="middle">one identity</text>
+                  <text x="91" y="10" dy="0.35em">db-01</text>
+                  <text class="sub" x="91" y="15" dy="0.35em">ssh, key</text>
+                  <text x="91" y="29" dy="0.35em">bastion</text>
+                  <text class="sub" x="91" y="34" dy="0.35em">ssh, key</text>
+                  <text x="91" y="48" dy="0.35em">win-build</text>
+                  <text class="sub" x="91" y="53" dy="0.35em">rdp, password</text>
+                </g>
+              </svg>
+            </figure>
+          </div>
+        </section>
+
+        <section class="branch" id="ssh" aria-labelledby="ssh-h">
+          <h2 id="ssh-h">SSH</h2>
+          <div class="branch-body">
+            <div class="copy">
+              <p class="claim">One session per host. Tabs, forwards and RDP tunnels ride on it.</p>
+              <ul class="facts">
+                <li>
+                  Password, private key with passphrase, ssh-agent, OpenSSH certificates, and hardware keys through
+                  ssh-agent.
+                </li>
+                <li>Jump host chains.</li>
+                <li>
+                  On first connect Tervia shows the host key's SHA-256 fingerprint and pins it once you trust it. The
+                  Known Hosts page lists pins and revokes them.
+                </li>
+              </ul>
+            </div>
+            <figure class="diagram">
+              <svg viewBox="0 0 130 58" role="img" aria-labelledby="mux-title">
+                <title id="mux-title">
+                  Two terminal tabs, a local forward on port 5432 and an RDP tunnel all share one SSH session to db-01.
+                </title>
+                <g class="strands">
+                  <path d="M40 8H52A4 4 0 0 1 56 12V25A4 4 0 0 0 60 29H66" />
+                  <path d="M40 22H50A3.5 3.5 0 0 1 53.5 25.5A3.5 3.5 0 0 0 57 29H66" />
+                  <path d="M40 36H50A3.5 3.5 0 0 0 53.5 32.5A3.5 3.5 0 0 1 57 29H66" />
+                  <path d="M40 50H52A4 4 0 0 0 56 46V33A4 4 0 0 1 60 29H66" />
+                </g>
+                <path class="bus" d="M62 29H108" />
+                <g class="mux-labels" aria-hidden="true">
+                  <text x="37" y="8" dy="0.35em" text-anchor="end">terminal</text>
+                  <text x="37" y="22" dy="0.35em" text-anchor="end">terminal</text>
+                  <text x="37" y="36" dy="0.35em" text-anchor="end">-L 5432</text>
+                  <text x="37" y="50" dy="0.35em" text-anchor="end">rdp tunnel</text>
+                  <text class="caption" x="85" y="21" text-anchor="middle">one SSH session</text>
+                  <text class="host" x="113" y="29" dy="0.35em">db-01</text>
+                </g>
+              </svg>
+            </figure>
+          </div>
+        </section>
+
+        <section class="branch" id="forwards" aria-labelledby="forwards-h">
+          <h2 id="forwards-h">Port forwarding</h2>
+          <div class="branch-body">
+            <div class="copy">
+              <p class="claim">Local, remote and SOCKS rules that start when you need them.</p>
+              <ul class="facts">
+                <li>
+                  <code>-L</code>, <code>-R</code> and dynamic SOCKS5 <code>-D</code>. Local listeners bind
+                  <code>127.0.0.1</code> only. Leave the local port on Auto and the OS picks a free one.
+                </li>
+                <li>
+                  Start a rule by hand, with the host's terminal (<code>-L</code> only), or when Tervia starts. Rules
+                  that start with Tervia retry after 1, 3, 7, 15 and 30 seconds if the connection fails.
+                </li>
+                <li>
+                  Each rule shows its route and whether it is running, stopped or failed. A failed bind says why, such
+                  as a port already in use or one below 1024.
+                </li>
+                <li>Run a dev server on the remote machine and the <code>localhost:PORT</code> URL it prints is forwarded for you.</li>
+              </ul>
+            </div>
+            <figure class="rules">
+              <div class="rules-scroll" tabindex="0" role="region" aria-label="Forward rules">
+                <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">Rule</th>
+                      <th scope="col">Listens on</th>
+                      <th scope="col">Sends to</th>
+                      <th scope="col">Starts</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>-L</code></td>
+                      <td><code>127.0.0.1:5432</code></td>
+                      <td><code>db-01:5432</code></td>
+                      <td>with the terminal</td>
+                    </tr>
+                    <tr>
+                      <td><code>-R</code></td>
+                      <td><code>bastion:8080</code></td>
+                      <td><code>127.0.0.1:3000</code></td>
+                      <td>by hand</td>
+                    </tr>
+                    <tr>
+                      <td><code>-D</code></td>
+                      <td><code>127.0.0.1:1080</code></td>
+                      <td>SOCKS5</td>
+                      <td>when Tervia starts</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <pre class="term"><code><span class="prompt">db-01:~/app$</span> pnpm dev
+  Local:   http://localhost:5173/</code></pre>
+              <figcaption>Tervia sees the URL and forwards remote port 5173 to a free port on this computer.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="branch" id="sftp" aria-labelledby="sftp-h">
+          <h2 id="sftp-h">SFTP</h2>
+          <div class="branch-body branch-body-text">
+            <p class="claim">Remote files next to local ones. Drag between the two trees to upload and download.</p>
+            <ul class="facts">
+              <li>Drop, paste or drag files onto the remote tree to upload. Drag them onto the local Files tree to download.</li>
+              <li>Open a remote text file in the editor and save it back.</li>
+              <li>Create, rename, move by drag and delete.</li>
+              <li>Shows the branch name of remote git repos in the Workspaces panel.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="branch" id="rdp" aria-labelledby="rdp-h">
+          <h2 id="rdp-h">RDP</h2>
+          <div class="branch-body">
+            <div class="copy">
+              <p class="claim">Windows desktops in a pane, next to your terminals.</p>
+              <ul class="facts">
+                <li>TLS and CredSSP (NTLM). The server certificate is pinned on first connect.</li>
+                <li>Resolution follows the pane, or set a fixed size.</li>
+                <li>Clipboard text and images, both ways.</li>
+                <li>Connect directly, or through a saved SSH host.</li>
+              </ul>
+            </div>
+            <figure class="shot">
+              <a class="zoom" href="assets/shots/rdp.webp">
+                <span class="sr">Enlarge screenshot: </span><img
+                src="assets/shots/rdp.webp"
+                width="1920"
+                height="1153"
+                loading="lazy"
+                alt="A Windows desktop over RDP in a Tervia tab, next to an SSH tab, with the remote file tree still open on the left."
+              />
+              </a>
+            </figure>
+          </div>
+        </section>
+
+        <section class="branch" id="sync" aria-labelledby="sync-h">
+          <h2 id="sync-h">Sync</h2>
+          <div class="branch-body branch-body-text">
+            <p class="claim">
+              Hosts, vault and forward rules on every computer you use, encrypted before they leave this one.
+            </p>
+            <ul class="facts">
+              <li>Off by default. While it is off, nothing is uploaded, downloaded or listed.</li>
+              <li>Every device uses the same passphrase. The storage provider never sees a hostname or a key.</li>
+              <li>Runs on launch, on focus and after an edit, with Pull now and Push now when you want it.</li>
+              <li>
+                Passwords never sync. Private key bodies and their passphrases sync only if you turn that on.
+                Host-key pins, and which rules start with Tervia, stay on each device.
+              </li>
+              <li>When two devices edit the same record, the newest edit wins once both have synced.</li>
+              <li>
+                Rather keep a file? A <code>.tervia-backup</code> holds hosts, groups, the vault, forward rules and
+                their secrets, sealed with a passphrase.
+              </li>
+            </ul>
+            <dl class="specs">
+              <dt>Storage</dt>
+              <dd>S3-compatible, or WebDAV (Nextcloud, ownCloud)</dd>
+              <dt>Encryption</dt>
+              <dd>AES-256-GCM</dd>
+              <dt>Key derivation</dt>
+              <dd>PBKDF2-HMAC-SHA256, 600,000 iterations</dd>
+              <dt>Object names</dt>
+              <dd>HMAC-SHA256</dd>
+            </dl>
+          </div>
+        </section>
+
+        <section class="branch" id="workspace" aria-labelledby="workspace-h">
+          <h2 id="workspace-h">Local workspace</h2>
+          <div class="branch-body branch-body-text">
+            <div class="copy">
+              <p class="claim">A terminal, an editor and a file tree for this computer too.</p>
+              <ul class="facts">
+                <li>
+                  xterm.js with WebGL. Shell integration for zsh, bash, fish and PowerShell. Local sessions survive
+                  closing the window.
+                </li>
+                <li>Split panes, tabs, saved workspaces and pop-out windows.</li>
+                <li>CodeMirror 6 editor with vim mode, format on save and Markdown preview.</li>
+                <li>
+                  See whether Claude Code, Codex, Gemini and other agent CLIs in your terminals are working, waiting
+                  or done, on one board.
+                </li>
+                <li>Themes, rebindable shortcuts, and a Command Palette on <kbd>Mod+Shift+P</kbd>.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="branch" id="download" aria-labelledby="download-h">
+          <h2 id="download-h">Download</h2>
+          <div class="branch-body branch-body-text">
+            <p class="claim"><span data-version>The latest release</span> for macOS, Linux and Windows.</p>
+            <p class="claim-note">Tervia checks for signed updates every 6 hours and installs only when you say so.</p>
+            <div class="platforms">
+              <article class="platform" data-os="mac">
+                <h3>macOS <span class="req">10.15+</span></h3>
+                <ul class="files">
+                  <li><a href="https://github.com/rendyuwu/tervia/releases/latest" data-file="mac-arm">Apple silicon <code>.dmg</code></a></li>
+                  <li><a href="https://github.com/rendyuwu/tervia/releases/latest" data-file="mac-intel">Intel <code>.dmg</code></a></li>
+                </ul>
+                <p class="note">Builds are not code-signed. Drag Tervia to Applications, then run once:</p>
+                <pre class="cmd"><code>xattr -cr /Applications/Tervia.app</code></pre>
+              </article>
+              <article class="platform" data-os="linux">
+                <h3>Linux</h3>
+                <ul class="files">
+                  <li><a href="https://github.com/rendyuwu/tervia/releases/latest" data-file="appimage"><code>.AppImage</code></a></li>
+                  <li><a href="https://github.com/rendyuwu/tervia/releases/latest" data-file="deb"><code>.deb</code></a></li>
+                  <li><a href="https://github.com/rendyuwu/tervia/releases/latest" data-file="rpm"><code>.rpm</code></a></li>
+                </ul>
+                <p class="note">
+                  The AppImage needs FUSE, or run it with <code>--appimage-extract-and-run</code>. Blank window or
+                  <code>EGL_BAD_PARAMETER</code>: set <code>WEBKIT_DISABLE_DMABUF_RENDERER=1</code>.
+                </p>
+              </article>
+              <article class="platform" data-os="windows">
+                <h3>Windows</h3>
+                <ul class="files">
+                  <li><a href="https://github.com/rendyuwu/tervia/releases/latest" data-file="exe">Installer <code>-setup.exe</code></a></li>
+                </ul>
+                <p class="note">
+                  Per-user installer, not code-signed. SmartScreen warns on first launch: click More info, then Run
+                  anyway.
+                </p>
+              </article>
+            </div>
+            <div class="cli">
+              <p>
+                The <code>tervia</code> command opens a folder or file in the running window. The Windows installer and
+                the <code>.deb</code> and <code>.rpm</code> packages put it on your <code>PATH</code>. On macOS and
+                with the AppImage, turn it on in Settings, General. It writes <code>~/.local/bin/tervia</code>, so that folder must be on your
+                <code>PATH</code>.
+              </p>
+              <pre class="cmd"><code>tervia ~/projects/api</code></pre>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="foot wrap">
+      <p>
+        Tervia is Apache-2.0, a fork of <a href="https://github.com/IlhamriSKY/TEDI">TEDI</a> by IlhamriSKY, itself a
+        fork of <a href="https://github.com/crynta/terax-ai">Terax</a> by Crynta.
+      </p>
+      <nav class="foot-links" aria-label="Project">
+        <a href="https://github.com/rendyuwu/tervia">Source</a>
+        <a href="https://github.com/rendyuwu/tervia/releases">Releases</a>
+        <a href="https://github.com/rendyuwu/tervia/blob/main/CHANGELOG.md">Changelog</a>
+        <a href="https://github.com/rendyuwu/tervia/blob/main/KNOWN-LIMITS.md">What does not work yet</a>
+        <a href="https://github.com/rendyuwu/tervia#build-from-source">Build from source</a>
+      </nav>
+    </footer>
+
+    <dialog class="viewer" aria-label="Screenshot">
+      <form method="dialog">
+        <button class="viewer-close">Close</button>
+      </form>
+    </dialog>
+  </body>
+</html>
