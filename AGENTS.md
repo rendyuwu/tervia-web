@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Overview
-The static landing page for **Tervia**, a Tauri 2 desktop client for SSH, RDP, SFTP and port forwarding. It is served at `https://tervia.rendy.dev/` (from `og:url`). The app itself lives in the sibling repo `../tervia` (GitHub `rendyuwu/tervia`), and its About dialog links back here (`src/settings/sections/AboutSection.tsx`, `SITE_URL`).
+The static landing page for **Tervia**, a Tauri 2 desktop client for SSH, RDP, SFTP and port forwarding. It is served at `https://tervia.rendy.dev/` from Cloudflare Workers static assets: Workers Builds runs `npx wrangler deploy` on every push to `main`, and the whole repo root is the assets directory. The app itself lives in the sibling repo `../tervia` (GitHub `rendyuwu/tervia`), and its About dialog links back here (`src/settings/sections/AboutSection.tsx`, `SITE_URL`).
 
 There is no framework, no build step, no `package.json` and no dependencies. The site is three hand-written files plus `assets/`.
 
@@ -42,6 +42,7 @@ The GitHub API is unauthenticated (60 requests/hour per IP). If it gets rate-lim
 - `index.html`: all markup, meta/OG tags and the inline theme bootstrap script.
 - `main.js`: `FILES` (asset key → filename regex), `DOWNLOAD_BASE`, `PLATFORMS` (OS → label and default file).
 - `styles.css`: design tokens (`:root`), the dark fallback and all layout.
+- `.assetsignore`: gitignore-style list of repo files that must not be deployed (`.git`, `AGENTS.md`, `README.md`, `wrangler.jsonc`, …). **Any new non-site file at the repo root must be added here, or it becomes publicly reachable.**
 
 ## Couplings That Break Silently
 - `FILES` keys must match the `data-file` values (`mac-arm`, `mac-intel`, `appimage`, `deb`, `rpm`, `exe`), and each regex must match the release asset names produced by `../tervia` CI (`_aarch64.dmg`, `_x64.dmg`, `_amd64.AppImage`, `_amd64.deb`, `.x86_64.rpm`, `_x64-setup.exe`). Adding a platform or file means updating `FILES`, the `data-file` link and possibly `PLATFORMS`.
